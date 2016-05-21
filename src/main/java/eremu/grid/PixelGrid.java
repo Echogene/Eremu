@@ -46,4 +46,12 @@ public class PixelGrid {
 				.map(col -> col.collect(Collectors.toList()))
 				.collect(Collectors.toList());
 	}
+
+	public int getWidthResolution() {
+		return widthResolution;
+	}
+
+	public int getHeightResolution() {
+		return heightResolution;
+	}
 }

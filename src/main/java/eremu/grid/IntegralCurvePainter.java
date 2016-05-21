@@ -3,7 +3,6 @@ package eremu.grid;
 import eremu.curve.IntegralCurve;
 import eremu.math.MathUtil;
 
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 import static java.lang.Math.cos;
@@ -12,47 +11,11 @@ import static java.lang.Math.sin;
 /**
  * Paint a pixel grid using integral curves.
  */
-public class IntegralCurvePainter implements PixelGridPainter {
-
-	private final double minX;
-	private final double minY;
-	private final double maxX;
-	private final double maxY;
-
-	/**
-	 * The number of integral curves to start on a row.
-	 */
-	private final int xRange;
-
-	/**
-	 * The number of integral curves to start on a column
-	 */
-	private final int yRange;
-
-	private final AtomicInteger progress = new AtomicInteger();
-
-	private final PixelGrid grid;
+public class IntegralCurvePainter extends AbstractPixelGridPainter {
 
 	public IntegralCurvePainter(PixelGrid grid, double sparsity) {
-		this.grid = grid;
+		super(sparsity, grid, sparsity);
 
-		minX = grid.getBottomLeftX();
-		minY = grid.getBottomLeftY();
-		maxX = grid.getTopRightX();
-		maxY = grid.getTopRightY();
-
-		xRange = (int) ((double) grid.getWidthResolution() / sparsity);
-		yRange = (int) ((double) grid.getHeightResolution() / sparsity);
-	}
-
-	@Override
-	public AtomicInteger getProgress() {
-		return progress;
-	}
-
-	@Override
-	public int getCompleteProgress() {
-		return xRange * yRange;
 	}
 
 	@Override

@@ -31,12 +31,33 @@ public class PixelGrid {
 	}
 
 	public void increment(double x, double y) {
-		int xIndex = (int) Math.floor(widthResolution * (x - bottomLeftX) / (topRightX - bottomLeftX));
-		int yIndex = (int) Math.floor(heightResolution * (y - bottomLeftY) / (topRightY - bottomLeftY));
+		int xIndex = getXIndex(x);
+		int yIndex = getYIndex(y);
 
-		if (xIndex >= 0 && xIndex < widthResolution && yIndex >= 0 && yIndex < heightResolution) {
+		if (isInArea(xIndex, yIndex)) {
 			pixelValues.get(xIndex).get(yIndex).incrementAndGet();
 		}
+	}
+
+	public void set(double x, double y, int value) {
+		int xIndex = getXIndex(x);
+		int yIndex = getYIndex(y);
+
+		if (isInArea(xIndex, yIndex)) {
+			pixelValues.get(xIndex).get(yIndex).set(value);
+		}
+	}
+
+	private boolean isInArea(int xIndex, int yIndex) {
+		return xIndex >= 0 && xIndex < widthResolution && yIndex >= 0 && yIndex < heightResolution;
+	}
+
+	private int getYIndex(double y) {
+		return (int) Math.floor(heightResolution * (y - bottomLeftY) / (topRightY - bottomLeftY));
+	}
+
+	private int getXIndex(double x) {
+		return (int) Math.floor(widthResolution * (x - bottomLeftX) / (topRightX - bottomLeftX));
 	}
 
 	public List<List<Integer>> getPixelValues() {

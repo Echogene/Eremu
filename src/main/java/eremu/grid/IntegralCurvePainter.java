@@ -12,7 +12,7 @@ import static java.lang.Math.sin;
 /**
  * Paint a pixel grid using integral curves.
  */
-public class IntegralCurvePainter {
+public class IntegralCurvePainter implements PixelGridPainter {
 
 	private final double minX;
 	private final double minY;
@@ -45,14 +45,17 @@ public class IntegralCurvePainter {
 		yRange = (int) ((double) grid.getHeightResolution() / sparsity);
 	}
 
+	@Override
 	public AtomicInteger getProgress() {
 		return progress;
 	}
 
+	@Override
 	public int getCompleteProgress() {
 		return xRange * yRange;
 	}
 
+	@Override
 	public void paint() {
 		double distanceToMove = 0.005;
 

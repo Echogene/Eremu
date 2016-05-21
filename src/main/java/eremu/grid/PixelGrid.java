@@ -48,6 +48,13 @@ public class PixelGrid {
 		}
 	}
 
+	public void set(int pixelX, int pixelY, int value) {
+
+		if (isInArea(pixelX, pixelY)) {
+			pixelValues.get(pixelX).get(pixelY).set(value);
+		}
+	}
+
 	private boolean isInArea(int xIndex, int yIndex) {
 		return xIndex >= 0 && xIndex < widthResolution && yIndex >= 0 && yIndex < heightResolution;
 	}

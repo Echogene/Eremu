@@ -13,9 +13,25 @@ import static java.lang.Math.sin;
  */
 public class IntegralCurvePainter extends AbstractPixelGridPainter {
 
-	public IntegralCurvePainter(PixelGrid grid, double sparsity) {
-		super(sparsity, grid, sparsity);
+	/**
+	 * The number of integral curves to start on a row.
+	 */
+	private final int xRange;
+	/**
+	 * The number of integral curves to start on a column
+	 */
+	private final int yRange;
 
+	public IntegralCurvePainter(PixelGrid grid, double sparsity) {
+		super(grid);
+
+		xRange = (int) ((double) grid.getWidthResolution() / sparsity);
+		yRange = (int) ((double) grid.getHeightResolution() / sparsity);
+	}
+
+	@Override
+	public int getCompleteProgress() {
+		return xRange * yRange;
 	}
 
 	@Override

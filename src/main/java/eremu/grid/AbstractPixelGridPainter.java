@@ -19,7 +19,6 @@ public abstract class AbstractPixelGridPainter implements PixelGridPainter {
 		minY = grid.getBottomLeftY();
 		maxY = grid.getTopRightY();
 		maxX = grid.getTopRightX();
-
 	}
 
 	@Override

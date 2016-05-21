@@ -47,6 +47,22 @@ public class PixelGrid {
 				.collect(Collectors.toList());
 	}
 
+	public double getBottomLeftX() {
+		return bottomLeftX;
+	}
+
+	public double getBottomLeftY() {
+		return bottomLeftY;
+	}
+
+	public double getTopRightX() {
+		return topRightX;
+	}
+
+	public double getTopRightY() {
+		return topRightY;
+	}
+
 	public int getWidthResolution() {
 		return widthResolution;
 	}

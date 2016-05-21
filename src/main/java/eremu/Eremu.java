@@ -1,16 +1,10 @@
 package eremu;
 
-import eremu.curve.IntegralCurve;
+import eremu.grid.IntegralCurvePainter;
 import eremu.grid.PixelGrid;
-import eremu.math.MathUtil;
 import eremu.ui.ImageWindow;
 
 import java.awt.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.IntStream;
-
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
 
 public class Eremu {
 
@@ -23,16 +17,10 @@ public class Eremu {
 	private static final int MAX_Y =  6;
 
 	private static final double SPARSITY = 2;
-	private static final int X_RANGE = (int) ((double) WIDTH / SPARSITY);
-	private static final int Y_RANGE = (int) ((double) HEIGHT / SPARSITY);
-
-	private static AtomicInteger progress = new AtomicInteger();
-
-	private static PixelGrid grid;
 
 	public static void main(String[] args) {
 
-		grid = new PixelGrid(
+		PixelGrid grid = new PixelGrid(
 				MIN_X,
 				MIN_Y,
 				MAX_X,
@@ -40,36 +28,14 @@ public class Eremu {
 				WIDTH,
 				HEIGHT
 		);
-		double distanceToMove = 0.005;
 
-		ImageWindow imageWindow = new ImageWindow(grid, progress, X_RANGE * Y_RANGE);
+		IntegralCurvePainter painter = new IntegralCurvePainter(grid, SPARSITY);
+
+		ImageWindow imageWindow = new ImageWindow(grid, painter.getProgress(), painter.getCompleteProgress());
 		EventQueue.invokeLater(imageWindow::show);
 
-		IntStream.range(0, X_RANGE * Y_RANGE)
-				.parallel()
-				.mapToObj(i -> {
-					double initialX = MathUtil.progress(i % X_RANGE, X_RANGE, MIN_X, MAX_X);
-					double initialY = MathUtil.progress((int) Math.floor((double) i / (double) Y_RANGE), Y_RANGE, MIN_Y, MAX_Y);
-					return new IntegralCurve(
-							initialX,
-							initialY,
-							(x, y) -> MathUtil.towards(
-									2*cos(y)-sin(x),
-									2*sin(y)+cos(x),
-									x,
-									y
-							),
-							distanceToMove
-					);
-				})
-				.forEach(curve -> {
-					IntStream.range(0, 500)
-							.forEach(i -> {
-								curve.iterate();
-								grid.increment(curve.getX(), curve.getY());
-							});
-					progress.incrementAndGet();
-				});
+		painter.paint();
+
 		imageWindow.finish();
 	}
 
